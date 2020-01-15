@@ -22,6 +22,12 @@
     <Filter Include="Main">
       <UniqueIdentifier>{1fb3ca0a-5f13-4753-ac7e-542fc6947701}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Render">
+      <UniqueIdentifier>{47c427b2-0b3e-4546-90a5-083c1dac095b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Key">
+      <UniqueIdentifier>{e9651fde-4776-4417-9cdb-20eb108d5c39}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Device.cpp">
@@ -42,6 +48,9 @@
     <ClCompile Include="Source.cpp">
       <Filter>Main</Filter>
     </ClCompile>
+    <ClCompile Include="Render.cpp">
+      <Filter>Render</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Device.h">
@@ -58,6 +67,12 @@
     </ClInclude>
     <ClInclude Include="Window.h">
       <Filter>Window</Filter>
+    </ClInclude>
+    <ClInclude Include="Render.h">
+      <Filter>Render</Filter>
+    </ClInclude>
+    <ClInclude Include="Key.h">
+      <Filter>Key</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

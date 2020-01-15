@@ -16,9 +16,6 @@ public:
 	LPDIRECT3DDEVICE9 pDevice;
 	LPDIRECTINPUT8 pDinput;
 	LPDIRECTINPUTDEVICE8 pkey;
-	LPD3DXMESH pMesh;
-	D3DMATERIAL9* pMeshMaterials;
-	LPDIRECT3DTEXTURE9* pMeshTextures;
 
 	DWORD dwNumMaterials = 0;
 };

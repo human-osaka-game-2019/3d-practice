@@ -2,6 +2,7 @@
 #define DEVICE_H
 
 #include"DirectX.h"
+#include "Render.h"
 
 class Device
 {
@@ -28,7 +29,7 @@ public:
 	// 入力キーを入れる値
 	BYTE KeyState[MAX_KEY_NUMBER];
 
-	HRESULT BuildDxDevice(HWND* hInst, DirectX* directX);
+	HRESULT BuildDxDevice(HWND* hInst, DirectX* directX, Render render, Thing* thing);
 
 	void UpdateKeyStatus(DirectX* directX);
 
@@ -36,7 +37,7 @@ public:
 
 	//DirectX* directX;
 	HRESULT InitDinput(HWND*, DirectX*);
-	HRESULT InitD3d(HWND*, DirectX*);
+	HRESULT InitD3d(HWND*, DirectX*,Render render, Thing* thing);
 };
 
 

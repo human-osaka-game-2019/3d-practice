@@ -9,7 +9,7 @@ class Engine
 {
 public:
 
-	HWND* InitEngine(int width, int height, HINSTANCE hInst, DirectX* directX, Window window, Device device);
+	HWND* InitEngine(int width, int height, HINSTANCE hInst, DirectX* directX, Window window, Device device, Render render, Thing* thing);
 
 	void EndEngine(DirectX directX);
 

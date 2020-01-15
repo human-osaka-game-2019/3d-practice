@@ -1,6 +1,6 @@
 ﻿#include "Engine.h"
 
-HWND* Engine::InitEngine(int width, int height, HINSTANCE hInst, DirectX* directX, Window window, Device device)
+HWND* Engine::InitEngine(int width, int height, HINSTANCE hInst, DirectX* directX, Window window, Device device,Render render, Thing* thing)
 {
 	HWND hWnd = NULL;
 	static CHAR szAppName[] = "";
@@ -9,7 +9,7 @@ HWND* Engine::InitEngine(int width, int height, HINSTANCE hInst, DirectX* direct
 
 	window.MakeWindow(&hWnd, hInst, width, height);
 
-	if (FAILED(device.BuildDxDevice(&hWnd, directX)))
+	if (FAILED(device.BuildDxDevice(&hWnd, directX,render,thing)))
 	{
 
 		return 0;
@@ -30,11 +30,6 @@ void Engine::EndEngine(DirectX directX)
 	{
 		directX.pkey->Release();
 		directX.pkey = nullptr;
-	}
-	if (directX.pMesh != nullptr)
-	{
-		directX.pMesh->Release();
-		directX.pMesh = nullptr;
 	}
 	if (directX.pDevice != nullptr)
 	{

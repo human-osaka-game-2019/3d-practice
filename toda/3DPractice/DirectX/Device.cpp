@@ -1,10 +1,10 @@
 ﻿#include"Device.h"
 
 
-HRESULT Device::BuildDxDevice(HWND* hInst, DirectX* directX)
+HRESULT Device::BuildDxDevice(HWND* hInst, DirectX* directX, Render render, Thing* thing)
 {
 	//// InitD3d が初期化されているかどうか ////
-	if (FAILED(InitD3d(hInst, directX)))
+	if (FAILED(InitD3d(hInst, directX,render,thing)))
 	{
 		return E_FAIL;
 	}
@@ -23,7 +23,7 @@ HRESULT Device::BuildDxDevice(HWND* hInst, DirectX* directX)
 	return S_OK;
 }
 
-HRESULT Device::InitD3d(HWND* hInst, DirectX* directX)
+HRESULT Device::InitD3d(HWND* hInst, DirectX* directX,Render render,Thing* thing)
 {
 	if (NULL == (directX->pDirect3d = Direct3DCreate9(D3D_SDK_VERSION)))
 	{
@@ -48,6 +48,18 @@ HRESULT Device::InitD3d(HWND* hInst, DirectX* directX)
 	{
 		return E_FAIL;
 	}
+
+	// Zバッファー処理を有効にする
+	directX->pDevice->SetRenderState(D3DRS_ZENABLE, TRUE);
+
+	// ライトを有効にする
+	directX->pDevice->SetRenderState(D3DRS_LIGHTING, TRUE);
+
+	// アンビエントライト（環境光）を設定する
+	directX->pDevice->SetRenderState(D3DRS_AMBIENT, 0x00111111);
+
+	// スペキュラ（鏡面反射）を有効にする
+	directX->pDevice->SetRenderState(D3DRS_SPECULARENABLE, TRUE);
 
 	return S_OK;
 

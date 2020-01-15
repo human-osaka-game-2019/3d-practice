@@ -137,6 +137,7 @@
     <ClCompile Include="DrawTexture.cpp" />
     <ClCompile Include="Engine.cpp" />
     <ClCompile Include="Source.cpp" />
+    <ClCompile Include="Render.cpp" />
     <ClCompile Include="Window.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -144,6 +145,8 @@
     <ClInclude Include="DirectX.h" />
     <ClInclude Include="DrawTexture.h" />
     <ClInclude Include="Engine.h" />
+    <ClInclude Include="Key.h" />
+    <ClInclude Include="Render.h" />
     <ClInclude Include="Window.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

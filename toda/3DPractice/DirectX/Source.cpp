@@ -2,6 +2,7 @@
 //#include"../DirectX/Engine.h"
 //#include"../DirectX/Device.h"
 //#include"../DirectX/DrawTexture.h"
+//#include"../DirectX/Render.h"
 //
 //int WINAPI WinMain(HINSTANCE hInst, HINSTANCE hPrevInstance, LPSTR lpCmpLine, INT nCmdShow)
 //{
@@ -13,7 +14,10 @@
 //	Texture texture;
 //	Engine engine;
 //
-//	if ((hWnd = engine.InitEngine(800, 600, hInst, &directX, window, device)) == NULL)
+//	Render render;
+//	Thing thing[4];
+//
+//	if ((hWnd = engine.InitEngine(1000, 800, hInst, &directX, window, device, render, thing)) == NULL)
 //	{
 //		return 0;
 //	}
@@ -24,6 +28,7 @@
 //	MSG msg;
 //
 //	ZeroMemory(&msg, sizeof(msg));
+//
 //	while (msg.message != WM_QUIT)
 //	{
 //		if (PeekMessage(&msg, NULL, 0, 0, PM_REMOVE))
@@ -44,11 +49,7 @@
 //
 //				device.UpdateKeyStatus(&directX);
 //
-//				engine.DrawStart(&directX);
-//
-//				//Texture::DrawTexture();
-//
-//				engine.DrawEnd(directX);
+//				render.RenderThing(thing, &directX);
 //
 //				time = timeGetTime();
 //			}
