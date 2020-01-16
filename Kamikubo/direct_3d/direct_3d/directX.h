@@ -204,8 +204,6 @@ private:
 
 	static DirectX* instance;
 
-	BOOL is_sphere_render = FALSE;
-
 	CameraMove type = CameraMove::R1;
 
 public:

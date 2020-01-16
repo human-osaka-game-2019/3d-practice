@@ -120,19 +120,6 @@ VOID DirectX::ModeChange()
 	if (GetKeyState(DIK_4) == KEY_STATE::ON)
 		m_crrent_mode = Mode::C_Zoom;
 
-	if (GetKeyState(DIK_5) == KEY_STATE::PRESS)
-		switch (is_sphere_render)
-		{
-		case TRUE:
-			is_sphere_render = FALSE;
-			break;
-		case FALSE:
-			is_sphere_render = TRUE;
-			break;
-		default:
-			break;
-		}
-
 }
 
 VOID DirectX::Move()
@@ -538,11 +525,8 @@ VOID DirectX::RenderThing(Thing* pThing)
 		pThing->pMesh->DrawSubset(i);
 	}
 
-	if (is_sphere_render)
-	{
 		pDevice->SetMaterial(pThing->pSphereMeshMaterials);
 		pThing->pSphereMesh->DrawSubset(0);
-	}
 
 }
 
