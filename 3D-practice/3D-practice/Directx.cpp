@@ -260,6 +260,7 @@ VOID Directx::FreeDx()
 	{
 		SAFE_RELEASE(Thing[i].pMesh);
 	}
+	SAFE_RELEASE(pFont);
 	SAFE_RELEASE(pDevice);
 	SAFE_RELEASE(pD3d);
 }
