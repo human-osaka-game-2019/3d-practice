@@ -23,10 +23,6 @@ struct Thing
 	//! 大きさの変数
 	float scale = 1.0f;
 
-	//!カメラ変数
-	float camera_x = 0;
-	float camera_y = 0;
-	float camera_z = 0;
 
 	Thing()
 	{
@@ -43,7 +39,19 @@ public:
 
 	void RenderThing(Thing* thing,DirectX* directX);
 
+	//!カメラ変数
+	float camera_x = 0;
+	float camera_y = 2;
+	float camera_z = -10;
 
+	float camera_x_another = 0;
+	float camera_y_another = 0;
+	float camera_z_another = 0;
+
+	float camera_heading = 0;
+	float camera_pitch = 0;
+
+	float Perspective = 4;
 
 private:
 
@@ -53,6 +61,10 @@ private:
 	D3DXMATRIXA16 PositionMatrix;
 	D3DXMATRIXA16 RotationMatrix, RotationMatrix_2;
 	D3DXMATRIXA16 ScaleMatrix;
+	D3DXMATRIXA16 CameraPositionMatrix;
+	D3DXMATRIXA16 PitcMatrix;
+	D3DXMATRIXA16 HeadingMatrix;
+	D3DXMATRIXA16 PitchMatrix;
 
 	D3DLIGHT9 light;
 	

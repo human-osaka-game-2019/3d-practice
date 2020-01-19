@@ -24,43 +24,23 @@ void Render::WorldTransform(Thing* thing, DirectX* directX)
 
 void Render::ViewTransform(Thing* thing, DirectX* directX)
 {
-	D3DXVECTOR3 vecEyePt( //カメラ（視点）位置
-		0.0f, // X座標
-		1.0f, // Y座標
-		-3.0f // Z座標
-	);
-
-	D3DXVECTOR3 vecLookatPt( //注視位置
-		0.0f, // X座標
-		0.0f, // Y座標
-		0.0f // Z座標
-	);
-
-	D3DXVECTOR3 vecUpVec( //上方位置 (0.0f,1.0f,0.0f) が通常値
-		0.0f, // X座標
-		3.0f, // Y座標
-		0.0f  // Z座標
-	);
-
-	/*
-	D3DXVECTOR3 vecEyePt(thing->camera_x, thing->camera_y, thing->camera_z); //カメラ（視点）位置
-	D3DXVECTOR3 vecLookatPt(0.0f, 1.0f, 3.0f);//注視位置
+	
+	D3DXVECTOR3 vecEyePt(camera_x,camera_y, camera_z); //カメラ（視点）位置
+	D3DXVECTOR3 vecLookatPt(camera_x_another, camera_y_another -1.0f,camera_z_another +3.0f);//注視位置
 	D3DXVECTOR3 vecUpVec(0.0f, 1.0f, 0.0f);//上方位置
 	D3DXMatrixIdentity(&ViewMatrix);
-	D3DXMatrixRotationY(&matHeading, fCameraHeading);
-	D3DXMatrixRotationX(&matPitch, fCameraPitch);
-	D3DXMatrixLookAtLH(&matCameraPosition, &vecEyePt, &vecLookatPt, &vecUpVec);
-	D3DXMatrixMultiply(&matView, &matView, &matHeading);
-	D3DXMatrixMultiply(&matView, &matView, &matPitch);
-	D3DXMatrixMultiply(&matView, &matView, &matCameraPosition);
-	*/
-	D3DXMatrixLookAtLH(&ViewMatrix, &vecEyePt, &vecLookatPt, &vecUpVec);
+	D3DXMatrixRotationY(&HeadingMatrix, camera_heading);
+	D3DXMatrixRotationX(&PitchMatrix,camera_pitch);
+	D3DXMatrixLookAtLH(&CameraPositionMatrix, &vecEyePt, &vecLookatPt, &vecUpVec);
+	D3DXMatrixMultiply(&ViewMatrix, &ViewMatrix, &HeadingMatrix);
+	D3DXMatrixMultiply(&ViewMatrix, &ViewMatrix, &PitchMatrix);
+	D3DXMatrixMultiply(&ViewMatrix, &ViewMatrix, &CameraPositionMatrix);
 	directX->pDevice->SetTransform(D3DTS_VIEW, &ViewMatrix);
 }
 
 void Render::ProjectionTransform(Thing* thing,DirectX* directX)
 {
-	D3DXMatrixPerspectiveFovLH(&ProjectionMatrix, D3DX_PI / 4, 1.0f, 1.0f, 100.0f);
+	D3DXMatrixPerspectiveFovLH(&ProjectionMatrix, D3DX_PI / Perspective, 1.0f, 1.0f, 100.0f);
 	directX->pDevice->SetTransform(D3DTS_PROJECTION, &ProjectionMatrix);
 }
 
