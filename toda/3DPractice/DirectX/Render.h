@@ -31,6 +31,34 @@ struct Thing
 	}
 };
 
+class Camera
+{
+public:
+
+	//!カメラ変数
+	float x = 0;
+	float y = 2;
+	float z = -10;
+
+
+	float x_another = 0;
+	float y_another = 0;
+	float z_another = 0;
+
+
+	float heading = 0;
+	float pitch = 0;
+
+
+	float Perspective = 4;
+
+	// 角度
+	float angle_x;
+	float angle_y;
+	float angle_z;
+
+};
+
 class Render
 {
 public:
@@ -39,19 +67,7 @@ public:
 
 	void RenderThing(Thing* thing,DirectX* directX);
 
-	//!カメラ変数
-	float camera_x = 0;
-	float camera_y = 2;
-	float camera_z = -10;
-
-	float camera_x_another = 0;
-	float camera_y_another = 0;
-	float camera_z_another = 0;
-
-	float camera_heading = 0;
-	float camera_pitch = 0;
-
-	float Perspective = 4;
+	Camera camera;
 
 private:
 
@@ -69,6 +85,7 @@ private:
 	D3DLIGHT9 light;
 	
 	LPDIRECT3DVERTEXBUFFER9 pVB = NULL;
+
 
 	static const int THING_AMOUNT = 4;
 

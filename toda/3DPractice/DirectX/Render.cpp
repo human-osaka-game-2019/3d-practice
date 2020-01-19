@@ -25,12 +25,12 @@ void Render::WorldTransform(Thing* thing, DirectX* directX)
 void Render::ViewTransform(Thing* thing, DirectX* directX)
 {
 	
-	D3DXVECTOR3 vecEyePt(camera_x,camera_y, camera_z); //カメラ（視点）位置
-	D3DXVECTOR3 vecLookatPt(camera_x_another, camera_y_another -1.0f,camera_z_another +3.0f);//注視位置
+	D3DXVECTOR3 vecEyePt(camera.x,camera.y, camera.z); //カメラ（視点）位置
+	D3DXVECTOR3 vecLookatPt(camera.x_another, camera.y_another -1.0f,camera.z_another +3.0f);//注視位置
 	D3DXVECTOR3 vecUpVec(0.0f, 1.0f, 0.0f);//上方位置
 	D3DXMatrixIdentity(&ViewMatrix);
-	D3DXMatrixRotationY(&HeadingMatrix, camera_heading);
-	D3DXMatrixRotationX(&PitchMatrix,camera_pitch);
+	D3DXMatrixRotationY(&HeadingMatrix, camera.heading);
+	D3DXMatrixRotationX(&PitchMatrix,camera.pitch);
 	D3DXMatrixLookAtLH(&CameraPositionMatrix, &vecEyePt, &vecLookatPt, &vecUpVec);
 	D3DXMatrixMultiply(&ViewMatrix, &ViewMatrix, &HeadingMatrix);
 	D3DXMatrixMultiply(&ViewMatrix, &ViewMatrix, &PitchMatrix);
@@ -40,7 +40,7 @@ void Render::ViewTransform(Thing* thing, DirectX* directX)
 
 void Render::ProjectionTransform(Thing* thing,DirectX* directX)
 {
-	D3DXMatrixPerspectiveFovLH(&ProjectionMatrix, D3DX_PI / Perspective, 1.0f, 1.0f, 100.0f);
+	D3DXMatrixPerspectiveFovLH(&ProjectionMatrix, D3DX_PI / camera.Perspective, 1.0f, 1.0f, 100.0f);
 	directX->pDevice->SetTransform(D3DTS_PROJECTION, &ProjectionMatrix);
 }
 

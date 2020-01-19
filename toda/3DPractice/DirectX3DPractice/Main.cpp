@@ -97,25 +97,25 @@ int WINAPI WinMain(HINSTANCE hInst, HINSTANCE hPrevInstance, LPSTR lpCmpLine, IN
 					// 上(カメラの移動方向)
 					if (device.GetKeyStatus(DIK_UP))
 					{
-						render.camera_pitch -= 0.1f;
+						render.camera.pitch -= 0.1f;
 					}
 
 					// 下(カメラの移動方向)
 					if (device.GetKeyStatus(DIK_DOWN))
 					{
-						render.camera_pitch += 0.1f;
+						render.camera.pitch += 0.1f;
 					}
 
 					// 右(カメラの移動方向)
 					if (device.GetKeyStatus(DIK_RIGHT))
 					{
-						render.camera_heading += 0.1f;
+						render.camera.heading += 0.1f;
 					}
 
 					// 左(カメラの移動方向)
 					if (device.GetKeyStatus(DIK_LEFT))
 					{
-						render.camera_heading -= 0.1f;
+						render.camera.heading -= 0.1f;
 					}
 
 				}
@@ -124,15 +124,15 @@ int WINAPI WinMain(HINSTANCE hInst, HINSTANCE hPrevInstance, LPSTR lpCmpLine, IN
 					// 前(カメラの移動方向)
 					if (device.GetKeyStatus(DIK_UP))
 					{
-						render.camera_z += 0.1f;
-						render.camera_z_another += 0.1f;
+						render.camera.z += 0.1f;
+						render.camera.z_another += 0.1f;
 					}
 
 					// 後ろ(カメラの移動方向)
 					if (device.GetKeyStatus(DIK_DOWN))
 					{
-						render.camera_z -= 0.1f;
-						render.camera_z_another -= 0.1f;
+						render.camera.z -= 0.1f;
+						render.camera.z_another -= 0.1f;
 					}
 				}
 				else if (device.GetKeyStatus(DIK_TAB)) // 注点回転
@@ -140,25 +140,25 @@ int WINAPI WinMain(HINSTANCE hInst, HINSTANCE hPrevInstance, LPSTR lpCmpLine, IN
 					// 上(カメラの移動方向)
 					if (device.GetKeyStatus(DIK_UP))
 					{
-						render.camera_y_another -= 0.1f;
+						render.camera.y_another -= 0.1f;
 					}
 
 					// 下(カメラの移動方向)
 					if (device.GetKeyStatus(DIK_DOWN))
 					{
-						render.camera_y_another += 0.1f;
+						render.camera.y_another += 0.1f;
 					}
 
 					// 右(カメラの移動方向)
 					if (device.GetKeyStatus(DIK_RIGHT))
 					{
-						render.camera_x_another += 0.1f;
+						render.camera.x_another += 0.1f;
 					}
 
 					// 左(カメラの移動方向)
 					if (device.GetKeyStatus(DIK_LEFT))
 					{
-						render.camera_x_another -= 0.1f;
+						render.camera.x_another -= 0.1f;
 					}
 				}
 				else // ノーマル回転
@@ -166,29 +166,29 @@ int WINAPI WinMain(HINSTANCE hInst, HINSTANCE hPrevInstance, LPSTR lpCmpLine, IN
 					// 上(カメラの移動方向)
 					if (device.GetKeyStatus(DIK_UP))
 					{
-						render.camera_y -= 0.1f;
-						render.camera_y_another -= 0.1f;
+						render.camera.y -= 0.1f;
+						render.camera.y_another -= 0.1f;
 					}
 
 					// 下(カメラの移動方向)
 					if (device.GetKeyStatus(DIK_DOWN))
 					{
-						render.camera_y += 0.1f;
-						render.camera_y_another += 0.1f;
+						render.camera.y += 0.1f;
+						render.camera.y_another += 0.1f;
 					}
 
 					// 右(カメラの移動方向)
 					if (device.GetKeyStatus(DIK_RIGHT))
 					{
-						render.camera_x += 0.1f;
-						render.camera_x_another += 0.1f;
+						render.camera.x += 0.1f;
+						render.camera.x_another += 0.1f;
 					}
 
 					// 左(カメラの移動方向)
 					if (device.GetKeyStatus(DIK_LEFT))
 					{
-						render.camera_x -= 0.1f;
-						render.camera_x_another -= 0.1f;
+						render.camera.x -= 0.1f;
+						render.camera.x_another -= 0.1f;
 					}
 
 				}
@@ -223,13 +223,13 @@ int WINAPI WinMain(HINSTANCE hInst, HINSTANCE hPrevInstance, LPSTR lpCmpLine, IN
 					// 拡大(物体の拡大)
 					if (device.GetKeyStatus(DIK_Z))
 					{
-						render.Perspective += 0.1;
+						render.camera.Perspective += 0.1;
 					}
 
 					// 縮小(物体の縮小)
 					if (device.GetKeyStatus(DIK_C))
 					{
-						render.Perspective -= 0.1f;
+						render.camera.Perspective -= 0.1f;
 					}
 				}
 				else
