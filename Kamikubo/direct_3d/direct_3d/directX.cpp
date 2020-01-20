@@ -194,29 +194,31 @@ VOID DirectX::Rotation()
 
 VOID DirectX::CameraMove()
 {
+	camera.save = camera.vecDegree;
+
 	if (GetKeyState(DIK_UP) == KEY_STATE::ON)
-		camera.y -= 0.1f;
+		camera.vecCameraPos.y -= 0.1f;
 
 	if (GetKeyState(DIK_RIGHT) == KEY_STATE::ON)
-		camera.x -= 0.1f;
+		camera.vecCameraPos.x -= 0.1f;
 
 	if (GetKeyState(DIK_LEFT) == KEY_STATE::ON)
-		camera.x += 0.1f;
+		camera.vecCameraPos.x += 0.1f;
 
 	if (GetKeyState(DIK_DOWN) == KEY_STATE::ON)
-		camera.y += 0.1f;
+		camera.vecCameraPos.y += 0.1f;
 
 	if (GetKeyState(DIK_W) == KEY_STATE::ON)
-		camera.pitch -= 0.1f;
+		camera.vecDegree.x -= 0.05f;
 
 	if (GetKeyState(DIK_A) == KEY_STATE::ON)
-		camera.heading -= 0.1f;
+		camera.vecDegree.y -= 0.05f;
 
 	if (GetKeyState(DIK_S) == KEY_STATE::ON)
-		camera.pitch += 0.1f;
+		camera.vecDegree.x += 0.05f;
 
 	if (GetKeyState(DIK_D) == KEY_STATE::ON)
-		camera.heading += 0.1f;
+		camera.vecDegree.y += 0.05f;
 
 	if (GetKeyState(DIK_SPACE) == KEY_STATE::PRESS)
 	{
@@ -447,46 +449,42 @@ VOID DirectX::RefreshMatrices(Thing* pThing)
 
 	D3DXMatrixTranslation(&matPosition, pThing->vecPosition.x, pThing->vecPosition.y,
 		pThing->vecPosition.z);
+
 	D3DXMatrixMultiply(&matWorld, &matWorld, &matPosition);
 
 	pDevice->SetTransform(D3DTS_WORLD, &matWorld);
 
 	//ビュートランスフォーム（視点座標変換）
-	D3DXVECTOR3 vecEyePt(camera.x, camera.y, camera.z);//カメラ位置
-	D3DXVECTOR3 vecLookatPt(camera.x - 22.0f, camera.y - 12.0f, camera.z + 18.0f);//注視位置
-	D3DXVECTOR3 vecUpVec(0.0f, 1.0f, 0.0f);//上方位置
-	D3DXMATRIXA16 matView, matCameraPos, matHeading, matPitch;
 
-	D3DXMatrixIdentity(&matView);
+	D3DXMatrixRotationY(&camera.matYaw, camera.vecDegree.y);
+	D3DXMatrixRotationX(&camera.matPitch, camera.vecDegree.x);
+	D3DXMatrixRotationZ(&camera.matRoll, camera.vecDegree.z);
+
+	D3DXVECTOR3 vecEyePt = camera.vecCameraPos;//カメラ位置
+	D3DXVECTOR3 vecLookatPt(camera.vecCameraPos.x - 22.0f, camera.vecCameraPos.y - 12.0f, camera.vecCameraPos.z + 18.0f);//注視位置
+	D3DXVECTOR3 vecUpVec(0.0f, 1.0f, 0.0f);//上方位置
+	D3DXMATRIXA16 matCameraPos;
 
 	//カメラ回転
-	D3DXMatrixRotationX(&matPitch, camera.pitch);
-	D3DXMatrixRotationY(&matHeading, camera.heading);
+	D3DXVECTOR3 radius = vecEyePt - vecLookatPt;
+
+	D3DXMatrixIdentity(&matCameraPos);
+
+	D3DXVec3TransformCoord(&radius, &radius, &camera.matYaw);
+	D3DXVec3TransformCoord(&radius, &radius, &camera.matPitch);
+	D3DXVec3TransformCoord(&radius, &radius, &camera.matRoll);
+
+	vecEyePt = radius + vecLookatPt;
 
 	D3DXMatrixLookAtLH(&matCameraPos, &vecEyePt, &vecLookatPt, &vecUpVec);
 
-	switch (type)
-	{
-	case CameraMove::R1:
-		D3DXMatrixMultiply(&matView, &matView, &matHeading);
-		D3DXMatrixMultiply(&matView, &matView, &matPitch);
-		D3DXMatrixMultiply(&matView, &matView, &matCameraPos);
-		break;
-	case CameraMove::R2:
-		D3DXMatrixMultiply(&matView, &matView, &matCameraPos);
-		D3DXMatrixMultiply(&matView, &matView, &matHeading);
-		D3DXMatrixMultiply(&matView, &matView, &matPitch);
-		break;
-	default:
-		break;
-	}
-
-	pDevice->SetTransform(D3DTS_VIEW, &matView);
+	pDevice->SetTransform(D3DTS_VIEW, &matCameraPos);
 
 	// プロジェクショントランスフォーム（射影変換）
 	D3DXMATRIXA16 matProj;
 	D3DXMatrixPerspectiveFovLH(&matProj, D3DX_PI / camera.perspective, 1.0f, 1.0f, 100.0f);
 	pDevice->SetTransform(D3DTS_PROJECTION, &matProj);
+
 }
 
 VOID DirectX::SetLight()

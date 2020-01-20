@@ -114,14 +114,16 @@ struct CUSTOMVERTEX
 */
 struct CameraState
 {
-	FLOAT x = 22.0f;
-	FLOAT y = 12.0f;
-	FLOAT z = -18.0f;
-
-	FLOAT heading = 0.0f;
-	FLOAT pitch = 0.0f;
+	D3DXVECTOR3 vecCameraPos = { 22.0f,12.0f,-18.0 };
+	D3DXVECTOR3 vecDegree = { 0.0f,0.0f,0.0f };
 
 	FLOAT perspective = 4.0f;
+
+	D3DXVECTOR3 save = { 0.0f,0.0f,0.0f };
+
+	D3DXMATRIXA16 matYaw;
+	D3DXMATRIXA16 matPitch;
+	D3DXMATRIXA16 matRoll;
 };
 
 /**
