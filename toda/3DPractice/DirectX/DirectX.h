@@ -16,6 +16,7 @@ public:
 	LPDIRECT3DDEVICE9 pDevice;
 	LPDIRECTINPUT8 pDinput;
 	LPDIRECTINPUTDEVICE8 pkey;
+	LPD3DXFONT pFont;
 
 	DWORD dwNumMaterials = 0;
 };

@@ -5,12 +5,21 @@
 
 #include "DirectX.h"
 
+struct Sphere
+{
+	D3DXVECTOR3 Center;
+	float Radius;
+};
+
 struct Thing
 {
 	LPD3DXMESH pMesh;
 	D3DMATERIAL9* pMeshMaterials;
 	LPDIRECT3DTEXTURE9* pMeshTextures;
 	DWORD dwNumMaterials;
+	D3DMATERIAL9* pSphereMeshMaterials;
+	LPD3DXMESH pSphereMesh = nullptr;
+	Sphere sphere;
 
 	//! 移動変数
 	D3DXVECTOR3 Position;
@@ -46,9 +55,9 @@ public:
 	float z_another = 0;
 
 
-	float heading = 0;
+	float yaw = 0;
 	float pitch = 0;
-
+	float roll = 0;
 
 	float Perspective = 4;
 
@@ -67,6 +76,12 @@ public:
 
 	void RenderThing(Thing* thing,DirectX* directX);
 
+	HRESULT InitSphere(LPDIRECT3DDEVICE9 pDevice, Thing* thing);
+
+	BOOL Impact(Thing* thingA, Thing* thingB);
+
+	void RenderString(LPD3DXFONT pFont, LPCSTR szStr, INT iX, INT iY,DirectX* directX);
+
 	Camera camera;
 
 private:
@@ -79,15 +94,20 @@ private:
 	D3DXMATRIXA16 ScaleMatrix;
 	D3DXMATRIXA16 CameraPositionMatrix;
 	D3DXMATRIXA16 PitcMatrix;
-	D3DXMATRIXA16 HeadingMatrix;
+	D3DXMATRIXA16 YawMatrix;
 	D3DXMATRIXA16 PitchMatrix;
+	D3DXMATRIXA16 RollMatrix;
 
 	D3DLIGHT9 light;
 	
+	
+
 	LPDIRECT3DVERTEXBUFFER9 pVB = NULL;
 
 
 	static const int THING_AMOUNT = 4;
+
+	bool boRenderSphere = true;
 
 	struct CUSTOMVERTEX
 	{
@@ -104,9 +124,6 @@ private:
 	void Rendering(Thing* thing, DirectX* directX);
 	
 	void SetLight(DirectX* directX);
-
-
-
 
 };
 

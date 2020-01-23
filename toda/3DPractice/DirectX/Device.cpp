@@ -61,6 +61,18 @@ HRESULT Device::InitD3d(HWND* hInst, DirectX* directX,Render render,Thing* thing
 	// スペキュラ（鏡面反射）を有効にする
 	directX->pDevice->SetRenderState(D3DRS_SPECULARENABLE, TRUE);
 
+	//文字列レンダリングの初期化
+	HFONT hFont;
+	if (NULL == (hFont = CreateFont(28, 0, 0, 0, FW_REGULAR, FALSE, FALSE, FALSE, SHIFTJIS_CHARSET,
+		OUT_DEFAULT_PRECIS, CLIP_DEFAULT_PRECIS, PROOF_QUALITY, FIXED_PITCH | FF_MODERN, "メイリオ"))) return E_FAIL;
+
+	//文字列フォントの設定
+	if (FAILED(D3DXCreateFont(directX->pDevice,14, 7,FW_BOLD,NULL,FALSE,
+		SHIFTJIS_CHARSET,OUT_DEFAULT_PRECIS,PROOF_QUALITY,FIXED_PITCH | FF_MODERN,
+		"メイリオ",&directX->pFont)))
+	{
+		return E_FAIL;
+	}
 	return S_OK;
 
 }

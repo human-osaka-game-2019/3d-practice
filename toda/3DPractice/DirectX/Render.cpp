@@ -28,12 +28,23 @@ void Render::ViewTransform(Thing* thing, DirectX* directX)
 	D3DXVECTOR3 vecEyePt(camera.x,camera.y, camera.z); //カメラ（視点）位置
 	D3DXVECTOR3 vecLookatPt(camera.x_another, camera.y_another -1.0f,camera.z_another +3.0f);//注視位置
 	D3DXVECTOR3 vecUpVec(0.0f, 1.0f, 0.0f);//上方位置
+
+	// 注視点を原点に移動
+	D3DXVECTOR3 vec3 = vecEyePt - vecLookatPt;
+
+	D3DXMatrixRotationX(&PitchMatrix, camera.pitch);
+	D3DXMatrixRotationY(&YawMatrix, camera.yaw);
+	D3DXMatrixRotationZ(&RollMatrix, camera.roll);
+
+	D3DXVec3TransformCoord(&vec3, &vec3, &PitchMatrix);
+	D3DXVec3TransformCoord(&vec3, &vec3, &YawMatrix);
+	D3DXVec3TransformCoord(&vec3, &vec3, &RollMatrix);
+
+	vecEyePt = vec3 + vecLookatPt;
+
 	D3DXMatrixIdentity(&ViewMatrix);
-	D3DXMatrixRotationY(&HeadingMatrix, camera.heading);
-	D3DXMatrixRotationX(&PitchMatrix,camera.pitch);
 	D3DXMatrixLookAtLH(&CameraPositionMatrix, &vecEyePt, &vecLookatPt, &vecUpVec);
-	D3DXMatrixMultiply(&ViewMatrix, &ViewMatrix, &HeadingMatrix);
-	D3DXMatrixMultiply(&ViewMatrix, &ViewMatrix, &PitchMatrix);
+
 	D3DXMatrixMultiply(&ViewMatrix, &ViewMatrix, &CameraPositionMatrix);
 	directX->pDevice->SetTransform(D3DTS_VIEW, &ViewMatrix);
 }
@@ -110,10 +121,28 @@ void Render::RenderThing(Thing* thing,DirectX* directX)
 			ProjectionTransform(&thing[i], directX);
 			SetLight(directX);
 			Rendering(&thing[i], directX);
+
+			if (boRenderSphere && thing[i].pSphereMesh != nullptr)
+			{
+				directX->pDevice->SetMaterial(thing[1].pSphereMeshMaterials);
+				thing[i].pSphereMesh->DrawSubset(0);
+			}
 		}
+
+		if (Impact(&thing[0], &thing[1]) == TRUE)
+		{
+			RenderString(directX->pFont, "衝突", 100, 100, directX);
+		}
+		else
+		{
+			RenderString(directX->pFont, "未衝突", 100, 100, directX);
+		};
 
 		directX->pDevice->EndScene();
 	}
+
+
+
 	directX->pDevice->Present(NULL, NULL, NULL, NULL);
 }
 
@@ -132,4 +161,116 @@ void Render::SetLight(DirectX* directX)
 	light.Range = 200.0f;
 	directX->pDevice->SetLight(0, &light);
 	directX->pDevice->LightEnable(0, TRUE);
+}
+
+//HRESULT InitSphere(LPDIRECT3DDEVICE9 pDevice,THING* pThing)
+//スフィアの計算およびスフィアを視認可能にするためにスフィアメッシュを作成する
+HRESULT Render::InitSphere(LPDIRECT3DDEVICE9 pDevice, Thing* thing)
+{
+	HRESULT hr = NULL;
+	LPDIRECT3DVERTEXBUFFER9 pVB = NULL;
+	VOID* pVertices = NULL;
+	D3DXVECTOR3 center;
+	FLOAT radius;
+
+	//メッシュの頂点バッファーをロックする
+	if (FAILED(thing->pMesh->GetVertexBuffer(&pVB)))
+	{
+		return E_FAIL;
+	}
+	if (FAILED(pVB->Lock(0, 0, &pVertices, 0)))
+	{
+		pVB->Release();
+		pVB = NULL;
+		return E_FAIL;
+	}
+
+	// メッシュの外接円の中心と半径を計算する
+	hr = D3DXComputeBoundingSphere(
+		(D3DXVECTOR3*)pVertices,
+		thing->pMesh->GetNumVertices(),
+		D3DXGetFVFVertexSize(thing->pMesh->GetFVF()),
+		&center,
+		&radius);
+	
+	pVB->Unlock();
+	pVB->Release();
+	pVB = NULL;
+
+	if (FAILED(hr))
+	{
+		return hr;
+	}
+	thing->sphere.Center = center;
+	thing->sphere.Radius = radius;
+
+	// 得られた中心と半径を基にメッシュとしてのスフィアを作成する
+	hr = D3DXCreateSphere(pDevice, radius, 24, 24, &thing->pSphereMesh, NULL);
+	if (FAILED(hr))
+	{
+		return hr;
+	}
+
+	//スフィアメッシュのマテリアル　白色、半透明、光沢強
+	thing->pSphereMeshMaterials = new D3DMATERIAL9;
+	thing->pSphereMeshMaterials->Diffuse.r = 1.0f;
+	thing->pSphereMeshMaterials->Diffuse.g = 1.0f;
+	thing->pSphereMeshMaterials->Diffuse.b = 1.0f;
+	thing->pSphereMeshMaterials->Diffuse.a = 0.5f;
+	thing->pSphereMeshMaterials->Ambient = thing->pSphereMeshMaterials->Diffuse;
+	thing->pSphereMeshMaterials->Specular.r = 1.0f;
+	thing->pSphereMeshMaterials->Specular.g = 1.0f;
+	thing->pSphereMeshMaterials->Specular.b = 1.0f;
+	thing->pSphereMeshMaterials->Emissive.r = 0.1f;
+	thing->pSphereMeshMaterials->Emissive.g = 0.1f;
+	thing->pSphereMeshMaterials->Emissive.b = 0.1f;
+	thing->pSphereMeshMaterials->Power = 120.0f;
+
+	return S_OK;
+}
+
+//衝突判定
+BOOL Render::Impact(Thing* thingA, Thing* thingB)
+{
+	//２つの物体の中心間の距離を求める
+	D3DXVECTOR3 vecLength = thingB->Position - thingA->Position;
+	FLOAT fLength = D3DXVec3Length(&vecLength);
+	// その距離が、2物体の半径を足したものより小さいということは、
+	//境界球同士が重なっている（衝突している）ということ
+	if (fLength < thingA->sphere.Radius + thingB->sphere.Radius)
+	{
+		return TRUE;
+	}
+
+	return FALSE;
+}
+
+//文字列レンダリング関数
+void Render::RenderString(LPD3DXFONT pFont,LPCSTR szStr,INT iX,INT iY,DirectX* directX) 
+{
+	RECT rect = { iX, iY, 0, 0 }; //表示領域
+
+	directX->pDevice->BeginScene();
+
+	//文字列サイズを計算
+	pFont->DrawText(
+		NULL,
+		szStr,
+		20,//-1,             //表示サイズ(-1で全部)
+		&rect,          //表示範囲
+		DT_CALCRECT,    //表示範囲に調整
+		NULL);
+
+	//そのサイズでレンダリング
+	pFont->DrawText(
+		NULL,
+		szStr,
+		20,//-1,                     //表示サイズ(-1で全部)
+		&rect,                  //表示範囲
+		DT_LEFT | DT_BOTTOM,    //左詰めで両端揃え
+		0xff00ff00);            //色
+
+	directX->pDevice->EndScene();
+	directX->pDevice->Present(NULL, NULL, NULL, NULL);
+
 }

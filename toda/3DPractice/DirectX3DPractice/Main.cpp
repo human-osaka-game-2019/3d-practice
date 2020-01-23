@@ -23,8 +23,11 @@ int WINAPI WinMain(HINSTANCE hInst, HINSTANCE hPrevInstance, LPSTR lpCmpLine, IN
 	}
 
 	render.RoadMesh(&thing[0], "Chips.x", &D3DXVECTOR3(0, 1, 20), &directX);
-	render.RoadMesh(&thing[1], "Can.x", &D3DXVECTOR3(0, 1, 0), &directX);
+	render.RoadMesh(&thing[1], "Can.x", &D3DXVECTOR3(0, 0, 0), &directX);
 	render.RoadMesh(&thing[2], "Ground.x", &D3DXVECTOR3(1, 0, 1), &directX);
+
+	render.InitSphere(directX.pDevice, &thing[0]);
+	render.InitSphere(directX.pDevice, &thing[1]);
 
 
 	timeBeginPeriod(1);//今の時間をtimeに保存。
@@ -109,13 +112,13 @@ int WINAPI WinMain(HINSTANCE hInst, HINSTANCE hPrevInstance, LPSTR lpCmpLine, IN
 					// 右(カメラの移動方向)
 					if (device.GetKeyStatus(DIK_RIGHT))
 					{
-						render.camera.heading += 0.1f;
+						render.camera.yaw += 0.1f;
 					}
 
 					// 左(カメラの移動方向)
 					if (device.GetKeyStatus(DIK_LEFT))
 					{
-						render.camera.heading -= 0.1f;
+						render.camera.yaw -= 0.1f;
 					}
 
 				}
@@ -199,6 +202,7 @@ int WINAPI WinMain(HINSTANCE hInst, HINSTANCE hPrevInstance, LPSTR lpCmpLine, IN
 				if (device.GetKeyStatus(DIK_L))
 				{
 					thing[1].Position.x += 0.1f;
+					thing[1].sphere.Center.x += 0.1f;
 				}
 				// 前(物体の移動方向)
 				if (device.GetKeyStatus(DIK_I))
@@ -260,7 +264,19 @@ int WINAPI WinMain(HINSTANCE hInst, HINSTANCE hPrevInstance, LPSTR lpCmpLine, IN
 					thing[1].Position.y = 1;
 					thing[1].Position.z = 0;
 					thing[1].scale = 1.0f;
+					render.camera.x = 0;
+					render.camera.y = 2;
+					render.camera.z = -10;
+					render.camera.x_another = 0;
+					render.camera.y_another = 0;
+					render.camera.z_another = 0;
+					render.camera.yaw = 0;
+					render.camera.pitch = 0;
+					render.camera.roll = 0;
+					render.camera.Perspective = 4;
 				}
+
+				
 
 				time = timeGetTime();
 			}
