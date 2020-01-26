@@ -59,135 +59,135 @@ int WINAPI WinMain(HINSTANCE hInst, HINSTANCE hPrevInstance, LPSTR lpCmpLine, IN
 
 				render.RenderThing(thing, &directX);
 				
-				// 左(物体の回転方向(Y軸))
+				// 左回転
 				if (device.GetKeyStatus(DIK_A))
 				{
 					thing[1].heading += 0.1f;
 				}
 
-				// 下(物体の回転方向(X軸))
+				// 下回転
 				if (device.GetKeyStatus(DIK_S))
 				{
 					thing[1].pitch += 0.1f;
 				}
 
-				// 右(物体の回転方向(Y軸))
+				// 右回転
 				if (device.GetKeyStatus(DIK_D))
 				{
 					thing[1].heading -= 0.1f;
 				}
 
-				// 上(物体の移動方向(X軸))
+				// 上移動
 				if (device.GetKeyStatus(DIK_W))
 				{
 					thing[1].pitch -= 0.1f;
 				}
 
-				// 右(物体の回転方向(Z軸))
+				// 右回転
 				if (device.GetKeyStatus(DIK_Q))
 				{
 					thing[1].bank += 0.1;
 				}
 
-				// 左(物体の回転方向(Z軸))
+				// 左回転
 				if (device.GetKeyStatus(DIK_E))
 				{
 					thing[1].bank -= 0.1;
 				}
 				
-				if (device.GetKeyStatus(DIK_SPACE))
+				if (device.GetKeyStatus(DIK_SPACE)) // 注視点移動
 				{
-					// 上(カメラの移動方向)
+					// 上
 					if (device.GetKeyStatus(DIK_UP))
 					{
 						render.camera.pitch -= 0.1f;
 					}
 
-					// 下(カメラの移動方向)
+					// 下
 					if (device.GetKeyStatus(DIK_DOWN))
 					{
 						render.camera.pitch += 0.1f;
 					}
 
-					// 右(カメラの移動方向)
+					// 右
 					if (device.GetKeyStatus(DIK_RIGHT))
 					{
 						render.camera.yaw += 0.1f;
 					}
 
-					// 左(カメラの移動方向)
+					// 左
 					if (device.GetKeyStatus(DIK_LEFT))
 					{
 						render.camera.yaw -= 0.1f;
 					}
 
 				}
-				else if (device.GetKeyStatus(DIK_LSHIFT))
+				else if (device.GetKeyStatus(DIK_LSHIFT)) // カメラ
 				{
-					// 前(カメラの移動方向)
+					// 前移動
 					if (device.GetKeyStatus(DIK_UP))
 					{
 						render.camera.z += 0.1f;
 						render.camera.z_another += 0.1f;
 					}
 
-					// 後ろ(カメラの移動方向)
+					// 後移動
 					if (device.GetKeyStatus(DIK_DOWN))
 					{
 						render.camera.z -= 0.1f;
 						render.camera.z_another -= 0.1f;
 					}
 				}
-				else if (device.GetKeyStatus(DIK_TAB)) // 注点回転
+				else if (device.GetKeyStatus(DIK_TAB)) // 一人称
 				{
-					// 上(カメラの移動方向)
+					// 上移動
 					if (device.GetKeyStatus(DIK_UP))
 					{
 						render.camera.y_another -= 0.1f;
 					}
 
-					// 下(カメラの移動方向)
+					// 下移動
 					if (device.GetKeyStatus(DIK_DOWN))
 					{
 						render.camera.y_another += 0.1f;
 					}
 
-					// 右(カメラの移動方向)
+					// 右移動
 					if (device.GetKeyStatus(DIK_RIGHT))
 					{
 						render.camera.x_another += 0.1f;
 					}
 
-					// 左(カメラの移動方向)
+					// 左移動
 					if (device.GetKeyStatus(DIK_LEFT))
 					{
 						render.camera.x_another -= 0.1f;
 					}
 				}
-				else // ノーマル回転
+				else // 注視点
 				{
-					// 上(カメラの移動方向)
+					// 上移動
 					if (device.GetKeyStatus(DIK_UP))
 					{
 						render.camera.y -= 0.1f;
 						render.camera.y_another -= 0.1f;
 					}
 
-					// 下(カメラの移動方向)
+					// 下移動
 					if (device.GetKeyStatus(DIK_DOWN))
 					{
 						render.camera.y += 0.1f;
 						render.camera.y_another += 0.1f;
 					}
 
-					// 右(カメラの移動方向)
+					// 右移動
 					if (device.GetKeyStatus(DIK_RIGHT))
 					{
 						render.camera.x += 0.1f;
 						render.camera.x_another += 0.1f;
 					}
 
-					// 左(カメラの移動方向)
+					// 左移動
 					if (device.GetKeyStatus(DIK_LEFT))
 					{
 						render.camera.x -= 0.1f;
@@ -196,25 +196,25 @@ int WINAPI WinMain(HINSTANCE hInst, HINSTANCE hPrevInstance, LPSTR lpCmpLine, IN
 
 				}
 
-				// ------------------
+				// 物体
 				
-				// 右(物体の移動方向)
+				// 右移動
 				if (device.GetKeyStatus(DIK_L))
 				{
 					thing[1].Position.x += 0.1f;
 					thing[1].sphere.Center.x += 0.1f;
 				}
-				// 前(物体の移動方向)
+				// 前物体
 				if (device.GetKeyStatus(DIK_I))
 				{
 					thing[1].Position.z += 0.1f;
 				}
-				// 左(物体の移動方向)
+				// 左物体
 				if (device.GetKeyStatus(DIK_J))
 				{
 					thing[1].Position.x -= 0.1f;
 				}
-				// 後(物体の移動方向)
+				// 後物体
 				if (device.GetKeyStatus(DIK_K))
 				{
 					thing[1].Position.z -= 0.1f;
@@ -224,13 +224,13 @@ int WINAPI WinMain(HINSTANCE hInst, HINSTANCE hPrevInstance, LPSTR lpCmpLine, IN
 
 				if (device.GetKeyStatus(DIK_SPACE))
 				{
-					// 拡大(物体の拡大)
+					// 拡大(カメラ)
 					if (device.GetKeyStatus(DIK_Z))
 					{
 						render.camera.Perspective += 0.1;
 					}
 
-					// 縮小(物体の縮小)
+					// 縮小(カメラ)
 					if (device.GetKeyStatus(DIK_C))
 					{
 						render.camera.Perspective -= 0.1f;
@@ -238,13 +238,13 @@ int WINAPI WinMain(HINSTANCE hInst, HINSTANCE hPrevInstance, LPSTR lpCmpLine, IN
 				}
 				else
 				{
-					// 拡大(物体の拡大)
+					// 拡大(物体)
 					if (device.GetKeyStatus(DIK_Z))
 					{
 						thing[1].scale += 0.1;
 					}
 
-					// 縮小(物体の縮小)
+					// 縮小(物体)
 					if (device.GetKeyStatus(DIK_C))
 					{
 						thing[1].scale -= 0.1f;

@@ -78,7 +78,7 @@ bool Render::RoadMesh(Thing* thing, LPCSTR file_name, D3DXVECTOR3* pvecPosition,
 		&thing->dwNumMaterials,&thing->pMesh)))
 	{
 		MessageBox(NULL, "Xファイルの読み込みに失敗しました", NULL, MB_OK);
-		return E_FAIL;
+		return false;
 	}
 
 	D3DXMATERIAL* d3dxMaterials = (D3DXMATERIAL*)pD3DXMtrlBuffer->GetBufferPointer();
@@ -248,7 +248,7 @@ BOOL Render::Impact(Thing* thingA, Thing* thingB)
 //文字列レンダリング関数
 void Render::RenderString(LPD3DXFONT pFont,LPCSTR szStr,INT iX,INT iY,DirectX* directX) 
 {
-	RECT rect = { iX, iY, 0, 0 }; //表示領域
+	RECT rect = { iX, iY, 100, 100 }; //表示領域
 
 	directX->pDevice->BeginScene();
 
@@ -256,7 +256,7 @@ void Render::RenderString(LPD3DXFONT pFont,LPCSTR szStr,INT iX,INT iY,DirectX* d
 	pFont->DrawText(
 		NULL,
 		szStr,
-		20,//-1,             //表示サイズ(-1で全部)
+		-1,             //表示サイズ(-1で全部)
 		&rect,          //表示範囲
 		DT_CALCRECT,    //表示範囲に調整
 		NULL);
@@ -265,7 +265,7 @@ void Render::RenderString(LPD3DXFONT pFont,LPCSTR szStr,INT iX,INT iY,DirectX* d
 	pFont->DrawText(
 		NULL,
 		szStr,
-		20,//-1,                     //表示サイズ(-1で全部)
+		-1,                     //表示サイズ(-1で全部)
 		&rect,                  //表示範囲
 		DT_LEFT | DT_BOTTOM,    //左詰めで両端揃え
 		0xff00ff00);            //色
